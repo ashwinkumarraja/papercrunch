@@ -56,7 +56,7 @@ public class SubLevel extends AppCompatActivity {
     public static List<String> concept2;
     public static List<String> concept3;
     public static String levelnam;
-    public static int id;
+    public static int id;//LEvel id
     public static int SizeOfLevel;
     public static int progress;
     public static int sid;

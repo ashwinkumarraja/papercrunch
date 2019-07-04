@@ -14,10 +14,11 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar pg;
     Handler mHandler=new Handler();
     private int mprogressbar=0;
-    SQLiteDatabase datavase;
-    LevelDbHelper levelDbHelper;
-    DataDbHelper dataDbHelper;
-    public static int avid;
+
+    SQLiteDatabase datavase;//Making a Database object of SQLiteDatabase.
+    LevelDbHelper levelDbHelper;//Calling the object of LevelDbHelper to access its methods.
+    DataDbHelper dataDbHelper;//Calling the object of DataDbHelper to access its methods.
+    public static int avid;//Contains the integer position of the avatar.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         sp.getInt("id_avatar",0);
-        levelDbHelper=new LevelDbHelper(this);
-        levelDbHelper.checktable(datavase);
 
-        dataDbHelper=new DataDbHelper(this);
-        dataDbHelper.checktable(datavase);
+        levelDbHelper=new LevelDbHelper(this);//Initializing variables
+        levelDbHelper.checktable(datavase);//Checks if tables already exist.
+
+        dataDbHelper=new DataDbHelper(this);//Initializing variables
+        dataDbHelper.checktable(datavase);//Checks if tables already exist.
+
         pg=(ProgressBar)findViewById(R.id.progressBar);
         final Intent i = new Intent(this,login.class);
         final Intent ii = new Intent(this,Main2Activity.class);

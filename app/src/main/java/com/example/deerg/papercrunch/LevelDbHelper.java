@@ -44,7 +44,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         putsubLevel(db);
         putsubbool(db);
         Log.d("Databaase Op","Table created");
-    }
+    }//Creates tables and adds content.
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -54,7 +54,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE3);
         onCreate(db);
         db.close();
-    }
+    }//Upgrades the tables.
 
     public void checktable(SQLiteDatabase db){
 
@@ -63,7 +63,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         if(cursor.getCount()==0) {
             onCreate(db);
         }
-    }
+    }//Checks the existence of non-empty tables.
 
     public void addLevel(int id,String levelnum,String level,int progress,int img,SQLiteDatabase db){
         //db= this.getWritableDatabase();
@@ -76,23 +76,9 @@ public class LevelDbHelper extends SQLiteOpenHelper {
 
         db.insert("level",null,contentValues);
 
-    }
+    }//Adds row of contents to level table.
 
-    public List<String> readLevelprog(SQLiteDatabase db)
-    {
-        List<String> lvl=new ArrayList<String>();
-        //db= this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from level ",null);
-        cursor.moveToFirst();
-        //int cnt=0;
-        while(cursor.isAfterLast()==false){
-            lvl.add(cursor.getString(cursor.getColumnIndex("progress")));
-            //cnt++;
-            Log.d("STRING",cursor.getString(cursor.getColumnIndex("progress")));
-            cursor.moveToNext();
-        }
-        return lvl;
-    }
+
     public int getprogress(SQLiteDatabase db,int id){
         int prog=0;
         db=this.getReadableDatabase();
@@ -101,7 +87,8 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         prog=cursor.getInt(cursor.getColumnIndex("progress"));
         return prog;
-    }
+    }//Returns the progress of particular level.
+
     public CardData readLevel(int id,SQLiteDatabase db) {
         List<String> lvl=new ArrayList<String>();
         db= this.getReadableDatabase();
@@ -127,14 +114,14 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         else{back = R.drawable.card;}
 
         return new CardData(lvlnum,lvlname,prog,img,id,back);
-    }
+    }//Returns CardData object of particular level.
 
     public void changeprogress(int id,SQLiteDatabase db,int prog){
         String level=Integer.toString(id);
         String progress=Integer.toString(prog);
         db=this.getWritableDatabase();
         db.execSQL("update level set progress = ? where level_id =  ? ",new String[]{progress,level});
-    }
+    }// Updates progress of particular level.
 
     public void putLevel(SQLiteDatabase db){
         //db= this.getWritableDatabase();
@@ -147,7 +134,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         addLevel(7,"Level 7","Loops",0,R.drawable.ic_loop_black_24dp,db);
         addLevel(8,"Level 8","Functions",0,R.drawable.ic_functions_black_24dp,db);
         addLevel(9,"Level 9","Arrays and Strings",0,R.drawable.ic_view_array_black_24dp,db);
-    }
+    }//Adds contents to the table.
 
 
     public List<String> getprev(SQLiteDatabase db, int id){
@@ -163,7 +150,8 @@ public class LevelDbHelper extends SQLiteOpenHelper {
 
         }
         return lev;
-    }
+    }//Returns all the previous levels.
+
 
     public void addsubbool(int id,int status,int currlev,SQLiteDatabase db){
         //db = this.getWritableDatabase();
@@ -172,7 +160,8 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         contentValues.put("sub_status",status);
         contentValues.put("current_level",currlev);
         db.insert("subbool",null,contentValues);
-    }
+    }//Adds contents in subbool Table.
+
     public void putsubbool(SQLiteDatabase db){
         addsubbool(1,0,1,db);
         addsubbool(2,0,1,db);
@@ -208,7 +197,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
 
 
 
-    }
+    }//Adds contents in the table.
 
     public int getlevid(String lvlname,SQLiteDatabase db){
         int id;
@@ -217,7 +206,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         id = cursor.getInt(cursor.getColumnIndex("level_id"));
         return id;
-    }
+    }//Returns level id using the Text Level name.
 
     public int getbool(int id,SQLiteDatabase db){
         int bool;
@@ -229,14 +218,17 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         bool=cursor.getInt(cursor.getColumnIndex("sub_status"));
 
         return bool;
-    }
+    }// Returns the status of sublevel.
+
     public void updatebool(int id,SQLiteDatabase db,int bool){
         String sublevel=Integer.toString(id);
         String boole =Integer.toString(bool);
         db=this.getWritableDatabase();
         db.execSQL("update subbool set sub_status = ? where sub_level_id =  ? ",new String[]{boole,sublevel});
 
-    }
+    }//Updates status of particular sublevel.
+
+
     public int getcurrlev(SQLiteDatabase db){
         int lev;
         db=this.getReadableDatabase();
@@ -245,12 +237,13 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         lev=cursor.getInt(cursor.getColumnIndex("current_level"));
         return lev;
-    }
+    }//Returns current level of user from subbool table.
+
     public void updatecurrlev(SQLiteDatabase db,int bool){
         String boole = Integer.toString(bool);
         db=this.getWritableDatabase();
         db.execSQL("update subbool set current_level=?",new String[]{boole});
-    }
+    }//Updates the current level.
 
     public void addsubLevel(int id,String sublevel1,String concept1,String concept2,String concept3,int level_id,SQLiteDatabase db){
 //        db= this.getWritableDatabase();
@@ -264,7 +257,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
 
         db.insert("sublevel",null,contentValues);
 
-    }
+    }//Adds row of contents in sublevel table.
 
     public List<String> readSubLevel(SQLiteDatabase db,int id){
         List<String> lev =new ArrayList<String>();
@@ -278,7 +271,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return lev;
-    }
+    }//Reads sublevel table and returns the sublevels.
 
     public List<String> getconcept1(SQLiteDatabase db, int id){
         List<String> lev =new ArrayList<String>();
@@ -292,7 +285,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return lev;
-    }
+    }// Returns concept1 of every sublevel.
 
     public List<String> getconcept2(SQLiteDatabase db, int id){
         List<String> lev =new ArrayList<String>();
@@ -306,7 +299,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return lev;
-    }
+    }// Returns concept2 of every sublevel.
 
 
     public List<String> getconcept3(SQLiteDatabase db, int id){
@@ -321,8 +314,9 @@ public class LevelDbHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return lev;
-    }
-    public int readSubid(String subname,SQLiteDatabase db)
+    }// Returns concept3 of every sublevel.
+
+    public int readSubid(String subname,SQLiteDatabase db)// Returns sublevevl id.
     {
         db=this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT sub_level_id FROM sublevel WHERE sublevel_name = ?",new String[]{subname});
@@ -332,8 +326,6 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         return a;
 
     }
-
-
 
     public void putsubLevel(SQLiteDatabase db){
         //db = this.getWritableDatabase();
@@ -1257,7 +1249,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
                         "\n" +
                         "Hello, world" ,9,db);
 
-    }
+    }//Adds contents to the sublevel table.
 
 }
 

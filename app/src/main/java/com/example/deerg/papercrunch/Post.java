@@ -11,7 +11,6 @@ public class Post {
     private int ID;
     private String first_name;
     private String last_name;
-    //private String phone_number;
 
 
     public String getToken() {
@@ -38,7 +37,5 @@ public class Post {
         return last_name;
     }
 
-    //public String getPno() {
-    //    return phone_number;
-    //}
+
 }

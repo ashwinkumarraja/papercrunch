@@ -31,7 +31,6 @@
             android:theme="@style/AppTheme.PopMe" />
         <activity android:name=".settings" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".GoogleSign" />
         <activity android:name=".Registeration" />
         <activity android:name=".CodedBefore" />
         <activity android:name=".WhatisCode" />

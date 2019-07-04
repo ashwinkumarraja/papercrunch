@@ -45,9 +45,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Main2Activity extends AppCompatActivity {
 
-    MainActivity one;
+    MainActivity one;//Creates MainActivity object to access all variables and data in MainActivity.
 
     Context mContext;
+
     android.support.v7.widget.Toolbar custom_toolbar;
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -56,17 +57,14 @@ public class Main2Activity extends AppCompatActivity {
     ExpandableListAdapter mExpandableListAdapter;
     List<String> listheader;
     HashMap<String, List<String>> listchild;
-    private ExpandableListView listView;
-    private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHash;
-    private ProgressBar progressBar;
-    private Object LevelDbHelper;
-    public static List<String> lev;
-    public static List<String> head2;
-    public static List<CardData> card1;
-    public static List<String> c1,c2,c3;
 
-    LevelDbHelper levelDbHelper;
+
+    public static List<String> lev;//Will contain all the sublevels of particular level.
+    public static List<String> head2;
+    public static List<CardData> card1;//Contains CardData objects of different levels.
+    public static List<String> c1,c2,c3;//Contains concpets of the levels.
+
+    LevelDbHelper levelDbHelper;// Calls a levelDbHelper object to access all the methods of LevelDbHelper.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +72,18 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         setuptoolbar();
 
-        card1 = new ArrayList<>();
+        card1 = new ArrayList<>();//Initialising the variables
 
-        one=new MainActivity();
-        final LevelDbHelper levelDbHelper = new LevelDbHelper(this);
+        one=new MainActivity();//Initialising the variables
+        final LevelDbHelper levelDbHelper = new LevelDbHelper(this);//Initialising the variables
 
-
+        //The list is added with the data of the CardDataobject stored in the database.
         for(int i=1;i<=9;i++){
             CardData cardData = levelDbHelper.readLevel(i,one.datavase);
             card1.add(cardData);
         }
 
+        //Hamburger menu Tiles.
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
@@ -97,19 +96,19 @@ public class Main2Activity extends AppCompatActivity {
         listheader.add("Rate us");
         listheader.add("Save Your Progress");
 
-        one=new MainActivity();
-        mContext=this;
 
-        final int sid=levelDbHelper.getcurrlev(one.datavase);
-        c1=levelDbHelper.getconcept1(one.datavase,sid);
-        c2=levelDbHelper.getconcept2(one.datavase,sid);
-        c3=levelDbHelper.getconcept3(one.datavase,sid);
+        mContext=this;//Initialising the variables
 
-        lev = levelDbHelper.readSubLevel(one.datavase,sid);
-        head2=levelDbHelper.getprev(one.datavase,sid);
+        final int sid=levelDbHelper.getcurrlev(one.datavase);//Returns Current Level.
+        c1=levelDbHelper.getconcept1(one.datavase,sid);//Returns Concept 1 of all sublevels of that Level.
+        c2=levelDbHelper.getconcept2(one.datavase,sid);//Returns Concept 2 of all sublevels of that Level.
+        c3=levelDbHelper.getconcept3(one.datavase,sid);//Returns Concept 3 of all sublevels of that Level.
 
-        listchild.put(listheader.get(0),lev);
-        listchild.put(listheader.get(1), head2);
+        lev = levelDbHelper.readSubLevel(one.datavase,sid);//Returns the sublevels of that Level.
+        head2=levelDbHelper.getprev(one.datavase,sid);//Returns previous Levels before that level.
+
+        listchild.put(listheader.get(0),lev);//Hamburger Menu Tile 1.
+        listchild.put(listheader.get(1), head2);//Hamburger Menu Tile 2.
 
         mExpandableListView = (ExpandableListView) findViewById(R.id.navmenu);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -134,23 +133,25 @@ public class Main2Activity extends AppCompatActivity {
                 {
                     TextView textView = (TextView) findViewById(R.id.subt);
                     Intent intent;
+                    //One must pass all the intents required to infiltrate the content in the Activity.
                     intent = new Intent(Main2Activity.this,ConceptScreen.class);
-                    intent.putExtra("con1",c1.get(childPosition));
-                    intent.putExtra("con2",c2.get(childPosition));
-                    intent.putExtra("con3",c3.get(childPosition));
-                    intent.putExtra("subname",lev.get(childPosition));
-                    intent.putExtra("levelid",sid);
-                    intent.putExtra("levelname",card1.get(childPosition).getlevelname());
+                    intent.putExtra("con1",c1.get(childPosition));//Passes the concept 1 of that Sublevel.
+                    intent.putExtra("con2",c2.get(childPosition));//Passes the concept 2 of that Sublevel.
+                    intent.putExtra("con3",c3.get(childPosition));//Passes the concept 3 of that Sublevel.
+                    intent.putExtra("subname",lev.get(childPosition));//Passes Sublevel Name.
+                    intent.putExtra("levelid",sid);//Passes Level id.
+                    intent.putExtra("levelname",card1.get(childPosition).getlevelname());//Passes the Levelname.
                     startActivity(intent);
                 }
                 else if(groupPosition==1)
                 {
                     Intent intent = new Intent(mContext,SubLevel.class);
-                    intent.putExtra("Level1",card1.get(childPosition).getlevelnum());
-                    intent.putExtra("Levelname",card1.get(childPosition).getlevelname());
-                    intent.putExtra("img",card1.get(childPosition).getimg());
-                    intent.putExtra("prog",card1.get(childPosition).geprog());
-                    intent.putExtra("id",childPosition+1);
+                    //One must pass all the intents required to infiltrate the content in the Activity.
+                    intent.putExtra("Level1",card1.get(childPosition).getlevelnum());//Passes Level number
+                    intent.putExtra("Levelname",card1.get(childPosition).getlevelname());//Passes Level Name.
+                    intent.putExtra("img",card1.get(childPosition).getimg());//Passes Image resource id.
+                    intent.putExtra("prog",card1.get(childPosition).geprog());//Passes progress.
+                    intent.putExtra("id",childPosition+1);//Passes Level id.
                     mContext.startActivity(intent);
                 }
                 return true;
@@ -291,10 +292,10 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);//The RecyclerView is initialized.
         RecyclerAdapter myAdap = new RecyclerAdapter(this,card1);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        recyclerView.setAdapter(myAdap);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));//SpanCount gives the number of coloumns
+        recyclerView.setAdapter(myAdap);//Adds the content from the Recycler Adapter Class.
 
     }
     @Override
@@ -309,6 +310,7 @@ public class Main2Activity extends AppCompatActivity {
         menuInflater.inflate(R.menu.onerflow_menu, menu);
         menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[one.avid]);
         return super.onCreateOptionsMenu(menu);
+        //Creates the options menu in the app bar , contains the avatr icon instead of overflow menu
     }
 
     @Override
@@ -318,6 +320,7 @@ public class Main2Activity extends AppCompatActivity {
         Intent i=new Intent(Main2Activity.this,IdScreen.class);
         startActivity(i);
         return super.onOptionsItemSelected(item);
+        //Gives intent to the avatar icon on app bar
     }
 
     public void setuptoolbar() {
@@ -326,6 +329,7 @@ public class Main2Activity extends AppCompatActivity {
             custom_toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.custom_toolbar);
         }
         setSupportActionBar(custom_toolbar);
+        //Contains the Toolbar layout and the logo papercrunch
 
     }
 
@@ -335,6 +339,7 @@ public class Main2Activity extends AppCompatActivity {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
         return cm.getActiveNetworkInfo() != null && networkInfo.isConnected();
+        //If true then the user is connected to the internet.
     }
 
 

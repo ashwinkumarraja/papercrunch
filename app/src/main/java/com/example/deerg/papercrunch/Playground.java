@@ -56,17 +56,15 @@ public class Playground extends AppCompatActivity {
     android.widget.ExpandableListAdapter mExpandableListAdapter;
     List<String> listheader;
     HashMap<String, List<String>> listchild;
-    private ExpandableListView listView;
-    private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHash;
-    private ProgressBar progressBar;
-    private Object LevelDbHelper;
-    public static List<String> lev;
-    public static List<String> head2;
-    public static List<CardData> card1;
-    public static List<String> c1,c2,c3;
 
-    LevelDbHelper levelDbHelper;
+    public static List<String> lev;//Will contain all the sublevels of particular level.
+    public static List<String> head2;
+    public static List<CardData> card1;//Contains CardData objects of different levels.
+    public static List<String> c1,c2,c3;//Contains concpets of the levels.
+
+
+    LevelDbHelper levelDbHelper;//Object to access all methods in class.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +73,12 @@ public class Playground extends AppCompatActivity {
 
         setuptoolbar();
 
-        card1 = new ArrayList<>();
+        card1 = new ArrayList<>();//Initializing variables
 
-        one=new MainActivity();
-        final LevelDbHelper levelDbHelper = new LevelDbHelper(this);
+        one=new MainActivity();//Initializing variables
+        final LevelDbHelper levelDbHelper = new LevelDbHelper(this);//Initializing variables
 
-
+        //Hamburger menu Tiles.
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
@@ -93,19 +91,19 @@ public class Playground extends AppCompatActivity {
         listheader.add("Rate us");
         listheader.add("Save Your Progress");
 
-        one=new MainActivity();
-        mContext=this;
+        one=new MainActivity();//Initialising the variables
+        mContext=this;//Initialising the variables
 
-        final int sid=levelDbHelper.getcurrlev(one.datavase);
-        c1=levelDbHelper.getconcept1(one.datavase,sid);
-        c2=levelDbHelper.getconcept2(one.datavase,sid);
-        c3=levelDbHelper.getconcept3(one.datavase,sid);
+        final int sid=levelDbHelper.getcurrlev(one.datavase);//Returns Current Level.
+        c1=levelDbHelper.getconcept1(one.datavase,sid);//Returns Concept 1 of all sublevels of that Level.
+        c2=levelDbHelper.getconcept2(one.datavase,sid);//Returns Concept 2 of all sublevels of that Level.
+        c3=levelDbHelper.getconcept3(one.datavase,sid);//Returns Concept 3 of all sublevels of that Level.
 
-        lev = levelDbHelper.readSubLevel(one.datavase,sid);
-        head2=levelDbHelper.getprev(one.datavase,sid);
+        lev = levelDbHelper.readSubLevel(one.datavase,sid);//Returns the sublevels of that Level.
+        head2=levelDbHelper.getprev(one.datavase,sid);//Returns previous Levels before that level.
 
-        listchild.put(listheader.get(0),lev);
-        listchild.put(listheader.get(1), head2);
+        listchild.put(listheader.get(0),lev);//Hamburger Menu Tile 1.
+        listchild.put(listheader.get(1), head2);//Hamburger Menu Tile 2.
 
         mExpandableListView = (ExpandableListView) findViewById(R.id.navmenu);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -131,6 +129,7 @@ public class Playground extends AppCompatActivity {
                     TextView textView = (TextView) findViewById(R.id.subt);
                     Intent intent;
                     intent = new Intent(Playground.this,ConceptScreen.class);
+                    //One must pass all the intents required to infiltrate the content in the Activity.
                     intent.putExtra("con1",c1.get(childPosition));
                     intent.putExtra("con2",c2.get(childPosition));
                     intent.putExtra("con3",c3.get(childPosition));
@@ -142,6 +141,7 @@ public class Playground extends AppCompatActivity {
                 else if(groupPosition==1)
                 {
                     Intent intent = new Intent(mContext,SubLevel.class);
+                    //One must pass all the intents required to infiltrate the content in the Activity.
                     intent.putExtra("Level1",card1.get(childPosition).getlevelnum());
                     intent.putExtra("Levelname",card1.get(childPosition).getlevelname());
                     intent.putExtra("img",card1.get(childPosition).getimg());
@@ -279,10 +279,12 @@ public class Playground extends AppCompatActivity {
 
 
         editText = (EditText)findViewById(R.id.EnterCode);
-        editText.setText("#include <stdio.h>\n\nint main(){\n\tprintf(\"Hello world\");\n}");
-        tocompile = editText.getText();
-        result = (TextView)findViewById(R.id.compiled);
+        editText.setText("#include <stdio.h>\n\nint main(){\n\tprintf(\"Hello world\");\n}");//Sets text of editText as this code initially.
+        tocompile = editText.getText();//toCompile contains the content of the EditText to compile.
+        result = (TextView)findViewById(R.id.compiled);//Contains the content of the end output.
+
         comp=(Button)findViewById(R.id.compilebutt);
+
         comp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -293,7 +295,6 @@ public class Playground extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 final String token=sp.getString("token","");
-
 
 
                 Call<Code> call2 = (Call<Code>) gda.sendcode("Token " + token,tocompile);
@@ -333,7 +334,7 @@ public class Playground extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        Intent omg = new Intent(Playground.this,Main2Activity.class);
+        Intent omg = new Intent(Playground.this,Main2Activity.class);//Redirects to Main2Activity.
         startActivity(omg);
     }
 
@@ -369,5 +370,6 @@ public class Playground extends AppCompatActivity {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
         return cm.getActiveNetworkInfo() != null && networkInfo.isConnected();
+        //Returns true if connected to the internet.
     }
 }

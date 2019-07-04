@@ -92,7 +92,7 @@ public class IdScreen extends AppCompatActivity {
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
-        listheader.add("View Prevoius Level");
+        listheader.add("View Previous Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
@@ -151,7 +151,7 @@ public class IdScreen extends AppCompatActivity {
                     intent.putExtra("con1",con1);
                     intent.putExtra("con2",con2);
                     intent.putExtra("con3",con3);
-                    intent.putExtra("subname",three.lev.get(childPosition));
+                    intent.putExtra("subname",lev.get(childPosition));
                     intent.putExtra("levelid",sid);
                     intent.putExtra("levelname",levelnam);
 

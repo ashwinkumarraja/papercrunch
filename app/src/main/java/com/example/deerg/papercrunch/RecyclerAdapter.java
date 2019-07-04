@@ -16,8 +16,8 @@ import java.util.List;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.LevelViewHolder> {
-    MainActivity one;
-    LevelDbHelper levelDbHelper;
+    MainActivity one;//Creates MainActivity object to access all variables and data in MainActivity.
+    LevelDbHelper levelDbHelper;//Creates object to access all methods in class file.
 
     private Context mContext;
     public static List<CardData> cardDataList;
