@@ -68,6 +68,8 @@ public class ConceptFragment extends Fragment {
             iv4.setVisibility(View.VISIBLE);
             iv5.setVisibility(View.VISIBLE);
             iv6.setVisibility(View.INVISIBLE);
+
+            ConceptScreen.quiztime.setVisibility(View.VISIBLE);
         }
 
 

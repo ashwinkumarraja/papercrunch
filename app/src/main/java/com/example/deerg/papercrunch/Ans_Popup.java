@@ -35,7 +35,7 @@ public class Ans_Popup extends AppCompatActivity {
     LevelDbHelper levelDbHelper;
     DataDbHelper dh=new DataDbHelper(this);
     SQLiteDatabase db;
-
+public static int stars5;
     private ImageView iv;
 
     @Override
@@ -81,7 +81,7 @@ public class Ans_Popup extends AppCompatActivity {
                 int qid = dh.getQid(ConceptScreen.subid, QuetionFragmentAdapter.index, db);
                 dh.updateStars(qid, tries, db);
             }
-
+stars5=dh.getStars(db);
             if(tries==0)
             {
                 iv1.setVisibility(View.VISIBLE);

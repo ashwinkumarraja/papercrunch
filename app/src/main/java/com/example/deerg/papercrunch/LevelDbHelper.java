@@ -337,7 +337,7 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         addsubLevel(2,"What is C?","C is a procedural programming language.","It was initially developed by Dennis Ritchie as a system " +
                 "programming language to write operating system.","The main features of C language include \n" +
                 "low-level access to memory, simple set of keywords, and clean style, these features make C language suitable for system programming.",1,db);
-        addsubLevel(3,"Basic C programming syntax","*return data type* main()\n" +
+        addsubLevel(3,"Basic C syntax","*return data type* main()\n" +
                 "{\n" +
                 "\t*Executable commands*;\n" +
                 "\treturn *value*;\n" +

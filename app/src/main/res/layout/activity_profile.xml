@@ -23,19 +23,21 @@
             android:text="name"
             android:textSize="20dp"
             android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/userId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="id"
+            android:textSize="20dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/email"
             android:textSize="20dp"
             android:text="email"
-            android:layout_marginTop="20dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/userId"
-            android:textSize="20dp"
-            android:text="id"
             android:layout_marginTop="20dp"/>
 
 

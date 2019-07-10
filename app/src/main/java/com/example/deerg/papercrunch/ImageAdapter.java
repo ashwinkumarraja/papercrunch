@@ -15,7 +15,7 @@ public class ImageAdapter extends BaseAdapter {
     public Integer i=0;
     private Context CTX;
 int j;
-    IdScreen is=new IdScreen();
+    Ans_Popup is=new Ans_Popup();
     int sid;
     int progress;
 
@@ -60,7 +60,7 @@ int j;
         else {
             img=(ImageView) convertView;
         }
-        if((position<=is.stars1/6&&position%2==0&&is.stars1>=6)){
+        if((position<=is.stars5/6&&position%2==0&&is.stars5>=6)){
             img.setImageResource(image_id[position]);
             img.setVisibility(View.VISIBLE);
             return img;

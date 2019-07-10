@@ -124,6 +124,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     editor.putString("token", posts.getToken());
                     editor.putString("fname", posts.getFname());
                     editor.putString("lname", posts.getLname());
+                    editor.putInt("gsign",1);
                     //editor.putString("phoneno",posts.getPno());
                     editor.putInt("successfullogin", 1);
                     editor.commit();

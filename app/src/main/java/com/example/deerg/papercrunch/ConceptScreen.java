@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
@@ -49,7 +51,7 @@ public class ConceptScreen extends AppCompatActivity {
     HashMap<String, List<String>> listchild;
     private ViewPager vp;
     private SliderFragmentAdapter adapter;
-    Button quiztime;
+    public static Button quiztime;
     public static List<String> c1,c2,c3;
     public static String concept1;
     public static String concept2;
@@ -84,7 +86,6 @@ public class ConceptScreen extends AppCompatActivity {
         setContentView(R.layout.activity_concept_screen);
         mContext=this;
         setuptoolbar();
-
         Intent getinfo = getIntent();
         concept1 = getinfo.getExtras().getString("con1");
         concept2 = getinfo.getExtras().getString("con2");
@@ -96,7 +97,7 @@ public class ConceptScreen extends AppCompatActivity {
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
-        listheader.add("View Prevoius Level");
+        listheader.add("View Previous Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
@@ -184,12 +185,54 @@ public class ConceptScreen extends AppCompatActivity {
             }
         });
 
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
+
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if(groupPosition==0 || groupPosition==1)
-                {
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
+
+                }
+                else if(groupPosition==5)
+                {
+                    if (!isNetworkConnected()) {
+                        new AlertDialog.Builder(ConceptScreen.this)
+                                .setMessage("Please check your internet connection")
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                    }
+                    else
+                    {
+                        Intent i=new Intent(mContext,Playground.class);
+                        startActivity(i);
+                    }
+
                 }
                 else if(groupPosition==6)
                 {
@@ -290,6 +333,7 @@ public class ConceptScreen extends AppCompatActivity {
         vp.setAdapter(adapter);
 
         quiztime=(Button)findViewById(R.id.btnQuiz);
+        quiztime.setVisibility(View.INVISIBLE);
 
         subname = subn;
         lvlname = lvln;
@@ -446,6 +490,13 @@ public class ConceptScreen extends AppCompatActivity {
         Intent i=new Intent(ConceptScreen.this,IdScreen.class);
         startActivity(i);
         return super.onOptionsItemSelected(item);
+    }
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+        return cm.getActiveNetworkInfo() != null && networkInfo.isConnected();
     }
 
 

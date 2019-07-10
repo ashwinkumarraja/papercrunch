@@ -6,11 +6,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Turn on/off the App Notifications"
+        android:text="Reset All Progress"
         android:padding="15dp"
-        android:id="@+id/notif"
+        android:id="@+id/reset"
         android:textSize="20dp"
         android:textStyle="bold"/>
 
@@ -55,15 +56,7 @@
         android:textSize="20dp"/>
 
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Reset All Progress"
-        android:padding="15dp"
-        android:id="@+id/reset"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+
 
     <TextView
         android:layout_marginTop="10dp"

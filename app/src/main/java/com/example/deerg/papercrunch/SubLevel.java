@@ -83,6 +83,7 @@ public class SubLevel extends AppCompatActivity {
         sid=levelDbHelper.getcurrlev(one.datavase);
 
 
+
         progress=levelDbHelper.getprogress(one.datavase,sid);
         if(progress==100&&sid%2!=0) {
             SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
@@ -102,6 +103,7 @@ public class SubLevel extends AppCompatActivity {
         ListView list = (ListView)findViewById(R.id.sublist);
 
         lev = levelDbHelper.readSubLevel(one.datavase,id);
+
 
         CardData cardDatasub = levelDbHelper.readLevel(levid+1,one.datavase);
 
@@ -126,7 +128,7 @@ public class SubLevel extends AppCompatActivity {
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
-        listheader.add("View Prevoius Level");
+        listheader.add("View Previous Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
@@ -190,12 +192,36 @@ public class SubLevel extends AppCompatActivity {
             }
         });
 
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
+
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (groupPosition == 0 || groupPosition == 1) {
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
-                }else if(groupPosition==5)
+
+                }
+                else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
                     new AlertDialog.Builder(SubLevel.this)
                             .setMessage("Please check your internet connection")
@@ -315,6 +341,12 @@ public class SubLevel extends AppCompatActivity {
         ArrayAdapter<String> adap = new ArrayAdapter<String>(this,R.layout.sublevel_text,lev);
         list.setAdapter(adap);
         SizeOfLevel = lev.size();
+        /*for(int i=0;i<SizeOfLevel;i++){
+        String sub1 = lev.get(1);
+        int sub1id = levelDbHelper.readSubid(sub1,one.datavase);
+        int subool = levelDbHelper.getbool(sub1id,one.datavase);
+        }*/
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">papercrunch</string>
+    <string name="app_name">Papercrunch</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -23,5 +23,6 @@
     <string name="first_2">first name</string>
     <string name="last_2">last name</string>
     <string name="GO_1">Go</string>
+    <string name="title_activity_country_viewer">CountryViewer</string>
 
 </resources>

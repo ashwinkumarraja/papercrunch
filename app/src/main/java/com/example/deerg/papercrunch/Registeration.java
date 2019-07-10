@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -114,8 +115,11 @@ public class Registeration extends AppCompatActivity {
                     }
                 };
                 MySingleton.getInstance(Registeration.this).addToRequest(stringRequest);
-                Intent intent15 = new Intent(this, IdScreen.class);
+                Intent intent15 = new Intent(this, login.class);
+                Toast.makeText(this, "Registered!", Toast.LENGTH_SHORT).show();
                 startActivity(intent15);
+                finish();
+
             }
         }
     }

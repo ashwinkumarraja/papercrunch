@@ -82,7 +82,7 @@ public class Playground extends AppCompatActivity {
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
-        listheader.add("View Prevoius Level");
+        listheader.add("View Previous Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
@@ -153,14 +153,36 @@ public class Playground extends AppCompatActivity {
             }
         });
 
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
+
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (groupPosition == 0 || groupPosition == 1) {
-                    if (mExpandableListView.isGroupExpanded(groupPosition))
-                        mExpandableListView.collapseGroup(groupPosition);
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
-                } else if(groupPosition==5)
+
+                }
+                else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
                     new AlertDialog.Builder(Playground.this)
                             .setMessage("Please check your internet connection")

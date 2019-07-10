@@ -22,7 +22,6 @@
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
             android:text="test"
-            android:textAlignment="center"
             android:textSize="24sp" />
     </ScrollView>
 

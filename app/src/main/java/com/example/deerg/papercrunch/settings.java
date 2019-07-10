@@ -54,7 +54,7 @@ public class settings extends AppCompatActivity {
     public static List<String> c1,c2,c3;
     public static List<String> lev;
     public static List<String> head2;
-    TextView reset,logout,changepass;
+    TextView reset,logout,changepass,bug,feedback;
     login tt;
 
 
@@ -133,14 +133,56 @@ public class settings extends AppCompatActivity {
             }
         });
 
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
+
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (groupPosition == 0 || groupPosition == 1) {
-                    if (mExpandableListView.isGroupExpanded(groupPosition))
-                        mExpandableListView.collapseGroup(groupPosition);
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
-                } else if (groupPosition == 6) {
+
+                }
+                else if(groupPosition==5)
+                {
+                    if (!isNetworkConnected()) {
+                        new AlertDialog.Builder(settings.this)
+                                .setMessage("Please check your internet connection")
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                    }
+                    else
+                    {
+                        Intent i=new Intent(mContext,Playground.class);
+                        startActivity(i);
+                    }
+
+                }
+                else if (groupPosition == 6) {
                     Intent i = new Intent(mContext, settings.class);
                     startActivity(i);
                 } else if (groupPosition == 8) {
@@ -243,11 +285,15 @@ public class settings extends AppCompatActivity {
         });
 
 
+
+
         SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sp.edit();
         final String token = sp.getString("token", "");
         final int totalStars = sp.getInt("totalstars", 0);
         final String email = sp.getString("email", "");
+
+
         if (!isNetworkConnected()) {
             new AlertDialog.Builder(settings.this)
                     .setMessage("Please check your internet connection")
@@ -259,10 +305,65 @@ public class settings extends AppCompatActivity {
                     }).show();
 
         } else {
+            feedback = (TextView) findViewById(R.id.feedback);
+            feedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    String[] recipients = {"xyz@gmail.com"};
+                    intent.putExtra(Intent.EXTRA_EMAIL, "deerghsingh11@gmial.com");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback for the app");
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                    //intent.putExtra(Intent.EXTRA_CC,"ghi");
+                    intent.setType("text/html");
+                    startActivity(Intent.createChooser(intent, "Send mail"));
+                }
+            });
+        }
+
+            bug = (TextView) findViewById(R.id.bug);
+            bug.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isNetworkConnected()) {
+                        new AlertDialog.Builder(settings.this)
+                                .setMessage("Please check your internet connection")
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_EMAIL, "");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Bug in the app");
+                        intent.putExtra(Intent.EXTRA_TEXT, "");
+                        //intent.putExtra(Intent.EXTRA_CC,"ghi");
+                        intent.setType("text/html");
+                        startActivity(Intent.createChooser(intent, "Send mail"));
+                    }
+                }
+            });
+
+
         reset = (TextView) findViewById(R.id.reset);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!isNetworkConnected()) {
+                    new AlertDialog.Builder(settings.this)
+                            .setMessage("Please check your internet connection")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+
+                } else {
                 levelDbHelper.updatecurrlev(one.datavase, 1);
                 editor.putInt("totalstars", 0);
                 for (int i = 0; i < 9; i++)
@@ -279,7 +380,7 @@ public class settings extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 final String token = sp.getString("token", "");
-                Toast.makeText(settings.this, token, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(settings.this, token, Toast.LENGTH_SHORT).show();
                 DataDbHelper dataDbHelper = new DataDbHelper(settings.this);
                 editor.putInt("totalstars", 0);
                 levelDbHelper.updatecurrlev(one.datavase, 1);
@@ -290,7 +391,7 @@ public class settings extends AppCompatActivity {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (!response.isSuccessful()) {
                             Log.d("Code: " + response.code(), "lol");
-                            Toast.makeText(settings.this, "Failed Please try again!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(settings.this, "Failed Please try again!", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -299,7 +400,7 @@ public class settings extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Log.d("failed: ", t.getMessage());
-                        Toast.makeText(settings.this, "Failed Please try again", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(settings.this, "Failed Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -321,7 +422,7 @@ public class settings extends AppCompatActivity {
                     public void onFailure(Call<Void> call, Throwable t) {
 
                         Log.d("failed poke: ", t.getMessage());
-                        Toast.makeText(settings.this, "Failed Please try again!!!!", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(settings.this, "Failed Please try again!!!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -349,31 +450,38 @@ public class settings extends AppCompatActivity {
                     public void onFailure(Call<Void> call, Throwable t) {
 
                         Log.d("failed poke: ", t.getMessage());
-                        Toast.makeText(settings.this, "Failed Please try again!!!!", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(settings.this, "Failed Please try again!!!!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
             }
+        }
         });
-    }
+
         //Toast.makeText(settings.this,token, Toast.LENGTH_SHORT).show();
 
-        if (!isNetworkConnected()) {
-            new AlertDialog.Builder(settings.this)
-                    .setMessage("Please check your internet connection")
-                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    }).show();
-
-        } else {
             logout = (TextView) findViewById(R.id.signout);
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences sp1 = getSharedPreferences("your_prefs",MODE_PRIVATE);
+                    if(sp1.getInt("successfullogin",0)==0){
+                        Toast.makeText(settings.this, "Sorry You must be logged in.", Toast.LENGTH_SHORT).show();
+
+                    }
+                    if (!isNetworkConnected()) {
+                        new AlertDialog.Builder(settings.this)
+                                .setMessage("Please check your internet connection")
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).show();
+
+                    } else {
                     final Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("https://papercrunchapp.herokuapp.com/").addConverterFactory(GsonConverterFactory.create())
                             .build();
@@ -401,7 +509,7 @@ public class settings extends AppCompatActivity {
                                     levelDbHelper.updatebool(i, one.datavase, 0);
                                 for (int i = 0; i < 9; i++)
                                     levelDbHelper.changeprogress(i + 1, one.datavase, 0);
-                                Toast.makeText(settings.this, "Logged out " + token, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(settings.this, "Logged out ", Toast.LENGTH_SHORT).show();
                                 Intent ii = new Intent(settings.this, MainActivity.class);
                                 startActivity(ii);
                                 finish();
@@ -413,20 +521,48 @@ public class settings extends AppCompatActivity {
                             Log.d("failed bool ", t.getMessage());
                         }
                     });
+                }
 
                 }
             });
 
-            changepass = (TextView) findViewById(R.id.changepass);
-            changepass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            final int gsign = sp.getInt("gsign",0);
+
+
+
+        changepass = (TextView) findViewById(R.id.changepass);
+        changepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sp1 = getSharedPreferences("your_prefs",MODE_PRIVATE);
+                if(sp1.getInt("successfullogin",0)==0){
+                    Toast.makeText(settings.this, "Sorry You must be logged in.", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(gsign ==1){
+                    Toast.makeText(settings.this, "Change password not applicable for Google account.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                if (!isNetworkConnected()) {
+                    new AlertDialog.Builder(settings.this)
+                            .setMessage("Please check your internet connection")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+
+                }
+                else {
                     Intent i = new Intent(settings.this, ChangePassword.class);
                     startActivity(i);
                     finish();
                 }
-            });
-        }
+            }
+        });
+
     }
 
     @Override

@@ -61,14 +61,13 @@
             android:layout_marginTop="550dp"
             android:layout_marginBottom="16dp"
             android:background="#1F7B75"
+            android:elevation="6dp"
             android:onClick="queScreen"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:text="Its Quiz Time!"
+            android:text="It's Quiz Time!"
             android:textColor="#fff"
-            android:elevation="6dp"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_subname"

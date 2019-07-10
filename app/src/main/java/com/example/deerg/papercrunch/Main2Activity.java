@@ -87,7 +87,7 @@ public class Main2Activity extends AppCompatActivity {
         listheader = new ArrayList<String>();
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
-        listheader.add("View Prevoius Level");
+        listheader.add("View Previous Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
@@ -157,19 +157,44 @@ public class Main2Activity extends AppCompatActivity {
                 return true;
             }
         });
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
 
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if(groupPosition==0 || groupPosition==1)
-                {
-                    if(mExpandableListView.isGroupExpanded(groupPosition))
-                        mExpandableListView.collapseGroup(groupPosition);
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
+
+                }
+                else if(groupPosition==4){
+                    //Intent i = new Intent(Main2Activity.this,CountryViewer.class);
+                    ///startActivity(i);
                 }
 
                 else if(groupPosition==5)
-                {if (!isNetworkConnected()) {
+                {
+                    if (!isNetworkConnected()) {
                     new AlertDialog.Builder(Main2Activity.this)
                             .setMessage("Please check your internet connection")
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -179,10 +204,13 @@ public class Main2Activity extends AppCompatActivity {
                                 }
                             }).show();
 
-                } else {
-
+                    }
+                    else
+                    {
                     Intent i=new Intent(mContext,Playground.class);
-                    startActivity(i);}
+                    startActivity(i);
+                    }
+
                 }
                 else if(groupPosition==6)
                 {
@@ -212,7 +240,7 @@ public class Main2Activity extends AppCompatActivity {
                         SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sp.edit();
                         final String token = sp.getString("token", "");
-                        Toast.makeText(Main2Activity.this, token, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main2Activity.this, token, Toast.LENGTH_SHORT).show();
                         Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase), sp.getInt("id_avatar", 0), "Token " + token);
 
                         call.enqueue(new Callback<Void>() {
@@ -286,8 +314,6 @@ public class Main2Activity extends AppCompatActivity {
                     }
                 }
 
-
-
                 return true;
             }
         });
@@ -300,7 +326,18 @@ public class Main2Activity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed(){
-        recreate();
+        new AlertDialog.Builder(Main2Activity.this)
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        moveTaskToBack(true);
+
+                        System.exit(0);
+                    }
+                }).show();
+
     }
 
     @Override

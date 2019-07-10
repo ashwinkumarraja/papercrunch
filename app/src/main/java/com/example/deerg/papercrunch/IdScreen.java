@@ -63,7 +63,7 @@ public class IdScreen extends AppCompatActivity {
     SQLiteDatabase db;
     TextView stars_1;
     //SQLiteDatabase db2;
-  public static int stars1;
+  public static int stars1=Ans_Popup.stars5;
   //  int x;
  // public static int progress1;
 
@@ -85,7 +85,7 @@ public class IdScreen extends AppCompatActivity {
         setuptoolbar();
 
         stars1=dh1.getStars(db);
-        Toast.makeText(this, "test"+stars1, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "test"+stars1, Toast.LENGTH_SHORT).show();
         two=new Main2Activity();
         final LevelDbHelper levelDbHelper = new LevelDbHelper(this);
 
@@ -171,14 +171,34 @@ public class IdScreen extends AppCompatActivity {
             }
         });
 
+        mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            int lastExpandedPosition=-1;
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    mExpandableListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
+
+
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if(groupPosition==0 || groupPosition==1)
-                {
-                    if(mExpandableListView.isGroupExpanded(groupPosition))
-                        mExpandableListView.collapseGroup(groupPosition);
+                if(groupPosition == 0 && mExpandableListView.isGroupExpanded(0)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+
+                else if(groupPosition == 1 && mExpandableListView.isGroupExpanded(1)){
+                    mExpandableListView.collapseGroup(groupPosition);
+                }
+                else if(groupPosition==0 || groupPosition==1) {
                     mExpandableListView.expandGroup(groupPosition);
+
                 }
                 else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
