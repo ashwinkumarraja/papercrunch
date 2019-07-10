@@ -162,6 +162,10 @@ public class settings extends AppCompatActivity {
                     mExpandableListView.expandGroup(groupPosition);
 
                 }
+                else if(groupPosition==2 ){
+                    Intent i = new Intent(settings.this,TreeFlow.class);
+                    startActivity(i);
+                }
                 else if(groupPosition==5)
                 {
                     if (!isNetworkConnected()) {

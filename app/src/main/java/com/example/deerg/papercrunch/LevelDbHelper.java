@@ -239,6 +239,20 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         return lev;
     }//Returns current level of user from subbool table.
 
+    public List<String> getsubname(SQLiteDatabase db){
+        List<String> lev = new ArrayList<String>();
+        db=this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select sublevel_name from sublevel",null);
+
+        cursor.moveToFirst();
+        while(!cursor.isLast()) {
+            lev.add(cursor.getString(cursor.getColumnIndex("sublevel_name")));
+            cursor.moveToNext();
+        }
+        return lev;
+    }
+
     public void updatecurrlev(SQLiteDatabase db,int bool){
         String boole = Integer.toString(bool);
         db=this.getWritableDatabase();

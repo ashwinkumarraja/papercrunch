@@ -187,9 +187,9 @@ public class Main2Activity extends AppCompatActivity {
                     mExpandableListView.expandGroup(groupPosition);
 
                 }
-                else if(groupPosition==4){
-                    //Intent i = new Intent(Main2Activity.this,CountryViewer.class);
-                    ///startActivity(i);
+                else if(groupPosition==2 ){
+                    Intent i = new Intent(mContext,TreeFlow.class);
+                    startActivity(i);
                 }
 
                 else if(groupPosition==5)

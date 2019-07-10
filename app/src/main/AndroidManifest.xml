@@ -30,6 +30,7 @@
             android:name=".Ans_Popup"
             android:theme="@style/AppTheme.PopMe" />
         <activity android:name=".settings" />
+        <activity android:name=".TreeFlow" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".Registeration" />
         <activity android:name=".CodedBefore" />
