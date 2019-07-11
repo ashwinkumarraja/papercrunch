@@ -601,4 +601,16 @@ public class settings extends AppCompatActivity {
 
         return cm.getActiveNetworkInfo() != null && networkInfo.isConnected();
     }
+    @Override
+    public void onBackPressed(){
+
+
+            Intent intent1 = new Intent(settings.this, Main2Activity.class);
+            startActivity(intent1);
+
+            finish();
+
+
+
+    }
 }
