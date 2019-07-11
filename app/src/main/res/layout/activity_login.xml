@@ -63,6 +63,12 @@
         android:hint="********"
         android:inputType="textPassword"
         />
+    <CheckBox
+        android:id="@+id/check_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:text="Show Password" />
 
     <Button
         android:id="@+id/button"

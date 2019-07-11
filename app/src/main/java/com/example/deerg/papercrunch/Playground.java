@@ -182,6 +182,10 @@ public class Playground extends AppCompatActivity {
                     mExpandableListView.expandGroup(groupPosition);
 
                 }
+                else if(groupPosition==2 ){
+                    Intent i = new Intent(mContext,TreeFlow.class);
+                    startActivity(i);
+                }
                 else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
                     new AlertDialog.Builder(Playground.this)
@@ -221,7 +225,7 @@ public class Playground extends AppCompatActivity {
                     SharedPreferences.Editor editor = sp.edit();
                     final String token = sp.getString("token", "");
                     Toast.makeText(Playground.this, token, Toast.LENGTH_SHORT).show();
-                    Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase), sp.getInt("id_avatar", 0), "Token " + token);
+                    Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase)+sp.getInt("totalstars", 0), sp.getInt("id_avatar", 0), "Token " + token);
 
                     call.enqueue(new Callback<Void>() {
                         @Override
@@ -365,7 +369,9 @@ public class Playground extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         ImageeAdapter imageeAdapter=new ImageeAdapter(this);
         menuInflater.inflate(R.menu.onerflow_menu, menu);
-        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[one.avid]);
+        final SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        int asd=sp.getInt("id_avatar",0);
+        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[asd]);
         return super.onCreateOptionsMenu(menu);
     }
 

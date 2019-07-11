@@ -52,8 +52,6 @@ public class Forgot extends AppCompatActivity {
             builder.setMessage("Please check your email id to see your new password ");
             displayAlert("input_error");
             view.setClickable(false);
-            Intent intent= new Intent(this,login.class);
-            startActivity(intent);
             StringRequest stringRequest= new StringRequest(Request.Method.POST, reg_url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -89,15 +87,8 @@ public class Forgot extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(code.equals("input_error")){
-
-                }
-                else if (code.equals("reg_success")){
-                    finish();
-                }
-                else if(code.equals("reg_failure")){
-                    Email.setText("");
-                }
+                Intent intent= new Intent(Forgot.this,login.class);
+                startActivity(intent);
             }
         });
         AlertDialog alertDialog = builder.create();

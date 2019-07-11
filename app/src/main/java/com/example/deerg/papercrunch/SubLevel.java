@@ -221,6 +221,10 @@ public class SubLevel extends AppCompatActivity {
                     mExpandableListView.expandGroup(groupPosition);
 
                 }
+                else if(groupPosition==2 ){
+                    Intent i = new Intent(mContext,TreeFlow.class);
+                    startActivity(i);
+                }
                 else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
                     new AlertDialog.Builder(SubLevel.this)

@@ -241,7 +241,7 @@ public class Main2Activity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sp.edit();
                         final String token = sp.getString("token", "");
                         //Toast.makeText(Main2Activity.this, token, Toast.LENGTH_SHORT).show();
-                        Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase), sp.getInt("id_avatar", 0), "Token " + token);
+                        Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase)+sp.getInt("totalstars", 0), sp.getInt("id_avatar", 0), "Token " + token);
 
                         call.enqueue(new Callback<Void>() {
                             @Override
@@ -345,7 +345,9 @@ public class Main2Activity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         ImageeAdapter imageeAdapter=new ImageeAdapter(this);
         menuInflater.inflate(R.menu.onerflow_menu, menu);
-        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[one.avid]);
+        final SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        int asd=sp.getInt("id_avatar",0);
+        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[asd]);
         return super.onCreateOptionsMenu(menu);
         //Creates the options menu in the app bar , contains the avatr icon instead of overflow menu
     }

@@ -63,7 +63,7 @@ public class IdScreen extends AppCompatActivity {
     SQLiteDatabase db;
     TextView stars_1;
     //SQLiteDatabase db2;
-  public static int stars1=Ans_Popup.stars5;
+  public static int stars1;//Ans_Popup.stars5;
   //  int x;
  // public static int progress1;
 
@@ -76,15 +76,24 @@ public class IdScreen extends AppCompatActivity {
         grid_View.setAdapter(new ImageAdapter(this));
         avatar=(ImageButton) findViewById(R.id.avatarr);
         imageeAdapter=new ImageeAdapter(this);
+
+        SharedPreferences sp = getSharedPreferences("your_prefs",MODE_PRIVATE);
+        int lol = sp.getInt("totalstars",0);
+
+        stars1=Ans_Popup.stars5+lol;
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("totalstars", stars1);
         stars_1=(TextView)findViewById(R.id.stars_1);
         stars_1.setText(Integer.toString(stars1));
         one=new MainActivity();
-        avatar.setImageResource((imageeAdapter.image_id2[one.avid]));
+
+        int asd=sp.getInt("id_avatar",0);
+        avatar.setImageResource((imageeAdapter.image_id2[asd]));
         Log.d("imge: "+ one.avid,"imge: "+one.avid);
 
         setuptoolbar();
 
-        stars1=dh1.getStars(db);
+        //stars1=dh1.getStars(db)+lol;
         //Toast.makeText(this, "test"+stars1, Toast.LENGTH_SHORT).show();
         two=new Main2Activity();
         final LevelDbHelper levelDbHelper = new LevelDbHelper(this);
@@ -200,6 +209,10 @@ public class IdScreen extends AppCompatActivity {
                     mExpandableListView.expandGroup(groupPosition);
 
                 }
+                else if(groupPosition==2 ){
+                    Intent i = new Intent(mContext,TreeFlow.class);
+                    startActivity(i);
+                }
                 else if(groupPosition==5)
                 {if (!isNetworkConnected()) {
                     new AlertDialog.Builder(IdScreen.this)
@@ -241,7 +254,7 @@ public class IdScreen extends AppCompatActivity {
                         SharedPreferences.Editor editor = sp.edit();
                         final String token = sp.getString("token", "");
                         //Toast.makeText(Main2Activity.this,token,Toast.LENGTH_SHORT).show();
-                        Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase), sp.getInt("id_avatar", 0), "Token " + token);
+                        Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase)+sp.getInt("totalstars", 0), sp.getInt("id_avatar", 0), "Token " + token);
 
                         call.enqueue(new Callback<Void>() {
                             @Override
@@ -328,7 +341,9 @@ public class IdScreen extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.onerflow_menu, menu);
-        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[one.avid]);
+        final SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        int asd=sp.getInt("id_avatar",0);
+        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[asd]);
 
         return super.onCreateOptionsMenu(menu);
     }

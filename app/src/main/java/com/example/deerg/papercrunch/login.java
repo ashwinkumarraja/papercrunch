@@ -12,9 +12,12 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,8 +59,11 @@ public class login extends AppCompatActivity implements View.OnClickListener, Go
     EditText username,password;
     LevelDbHelper levelDbHelper;
     AlertDialog.Builder builder;
-    String reg_url="http://192.168.43.29:8000/api/reset-password/";
+    String reg_url="https://papercrunch-1.herokuapp.com/api/reset-password/";
     String email;
+    CheckBox chk2;
+
+
 
 
     @Override
@@ -73,6 +79,19 @@ public class login extends AppCompatActivity implements View.OnClickListener, Go
         SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
         final Intent i=new Intent(getApplicationContext(),CodedBefore.class);
         final Intent ii=new Intent(getApplicationContext(),Main2Activity.class);
+        chk2=(CheckBox)findViewById(R.id.check_2);
+        chk2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+                if(b){
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+                }
+                else {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
 
 
         skip=(Button)findViewById(R.id.button3);

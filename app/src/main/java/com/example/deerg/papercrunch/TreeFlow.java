@@ -49,19 +49,26 @@ public class TreeFlow extends AppCompatActivity {
             MyData.nameArray[j]=lld.get(i);
             MyData.nameArrays[j]=lld.get(i+1);
         }
-        //MyData.nameArray[13]=lld.get(26);
-        //MyData.nameArray[13]="The End";
+        MyData.nameArray[13]="Strings";
+        MyData.nameArrays[13]="The End";
 
         data = new ArrayList<>();
-        for (int i = 0; i < 14; i++) {
+        for (int i=0,j=0;i<14 && j<25; i++, j+=2) {
             data.add(new DataModel(
                     MyData.nameArray[i],
-                    MyData.versionArray[i],
                     MyData.id_[i],
-                    MyData.drawableArray[i],
+                    MyData.drawableArray[j],
+                    MyData.drawableArray[j+1],
                     MyData.nameArrays[i]
             ));
         }
+        data.add(new DataModel(
+                MyData.nameArray[13],
+                MyData.id_[13],
+                MyData.drawableArray[25],
+                R.drawable.medal4,
+                MyData.nameArrays[13]
+        ));
 
         removedItems = new ArrayList<>();
 

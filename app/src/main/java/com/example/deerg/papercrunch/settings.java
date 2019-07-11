@@ -72,10 +72,10 @@ public class settings extends AppCompatActivity {
         listchild = new HashMap<String, List<String>>();
         listheader.add("View All Sub Levels");
         listheader.add("View Prevoius Level");
-        listheader.add("View Next Level");
         listheader.add("View Progress Cycle");
         listheader.add("");
         listheader.add("");
+        listheader.add("Playground");
         listheader.add("Settings");
         listheader.add("Rate us");
         listheader.add("Save Your Progress");
@@ -211,7 +211,7 @@ public class settings extends AppCompatActivity {
                     SharedPreferences.Editor editor = sp.edit();
                     final String token = sp.getString("token", "");
                     //Toast.makeText(Main2Activity.this,token,Toast.LENGTH_SHORT).show();
-                    Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase), sp.getInt("id_avatar", 0), "Token " + token);
+                    Call<Void> call = gda.sync(levelDbHelper.getcurrlev(one.datavase), dataDbHelper.getStars(one.datavase)+sp.getInt("totalstars", 0), sp.getInt("id_avatar", 0), "Token " + token);
 
                     call.enqueue(new Callback<Void>() {
                         @Override
@@ -574,7 +574,9 @@ public class settings extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.onerflow_menu, menu);
         ImageeAdapter imageeAdapter=new ImageeAdapter(this);
-        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[one.avid]);
+        final SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        int asd=sp.getInt("id_avatar",0);
+        menu.findItem(R.id.avatar).setIcon(imageeAdapter.image_id2[asd]);
         return super.onCreateOptionsMenu(menu);
     }
 

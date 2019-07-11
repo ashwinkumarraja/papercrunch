@@ -340,6 +340,56 @@ public class LevelDbHelper extends SQLiteOpenHelper {
         return a;
 
     }
+    public int readlvvlid(String subname,SQLiteDatabase db)// Returns sublevevl id.
+    {
+        db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select level_id from sublevel where sublevel_name = ?" ,new String[]{subname});
+        int a;
+        cursor.moveToFirst();
+        a=cursor.getInt(cursor.getColumnIndex("level_id"));
+        return a;
+
+    }
+
+    public String gc1(String subname,SQLiteDatabase db)// Returns sublevevl id.
+    {
+        db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select concept1 from sublevel where sublevel_name = ?" ,new String[]{subname});
+        cursor.moveToFirst();
+        String a=cursor.getString(cursor.getColumnIndex("concept1"));
+        return a;
+
+    }
+
+    public String gc2(String subname,SQLiteDatabase db)// Returns sublevevl id.
+    {
+        db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select concept2 from sublevel where sublevel_name = ?" ,new String[]{subname});
+        cursor.moveToFirst();
+        String a=cursor.getString(cursor.getColumnIndex("concept2"));
+        return a;
+
+    }
+
+    public String gc3(String subname,SQLiteDatabase db)// Returns sublevevl id.
+    {
+        db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select concept3 from sublevel where sublevel_name = ?" ,new String[]{subname});
+        cursor.moveToFirst();
+        String a=cursor.getString(cursor.getColumnIndex("concept3"));
+        return a;
+
+    }
+
+    public String readlvname(int id , SQLiteDatabase db){
+        db=this.getReadableDatabase();
+        String idd = Integer.toString(id);
+        Cursor cursor = db.rawQuery("select level_name from level where level_id =?" ,new String[]{idd});
+        //String a;
+        cursor.moveToFirst();
+        String a=cursor.getString(cursor.getColumnIndex("level_name"));
+        return a;
+    }
 
     public void putsubLevel(SQLiteDatabase db){
         //db = this.getWritableDatabase();

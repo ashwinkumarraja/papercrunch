@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -105,6 +106,7 @@ public class ChangePassword extends AppCompatActivity {
                 }
             };
             MySingleton.getInstance(ChangePassword.this).addToRequest(stringRequest);
+            Toast.makeText(this, "Password changed", Toast.LENGTH_SHORT).show();
         }
     }
     public void displayAlert(final String code){

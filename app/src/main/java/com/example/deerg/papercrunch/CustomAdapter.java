@@ -3,6 +3,8 @@ package com.example.deerg.papercrunch;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,8 +21,10 @@ import com.example.deerg.papercrunch.R;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.example.deerg.papercrunch.ConceptScreen.lev;
 import static com.example.deerg.papercrunch.ConceptScreen.levid;
 
 
@@ -91,44 +95,48 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         TextView textView_new = holder.textView_new;
 
-        CardView cardViews = holder.cardView;
+        final CardView cardViews = holder.cardView;
         CardView cardViews_new = holder.cardView_new;
 
         ImageView imageViews = holder.imageViewIcons;
         imageViews.setImageResource(R.drawable.avatar);
 
         textViewName.setText(dataSet.get(listPosition).getName());
-        textViewVersion.setText(dataSet.get(listPosition).getVersion());
+
         imageView.setImageResource(dataSet.get(listPosition).getImage());
+        imageViews.setImageResource(dataSet.get(listPosition).getImage());
 
 
         textView_new.setText(dataSet.get(listPosition).getName_second());
-
-
+        final LevelDbHelper levelDbHelper = new LevelDbHelper(context);
+        DataDbHelper dataDbHelper = new DataDbHelper(context);
+        one = new MainActivity();
+        int id = levelDbHelper.readSubid(dataSet.get(listPosition).name.toString(),one.datavase);
+        if(levelDbHelper.getbool(id,one.datavase)==1)
+            holder.cardView.setCardBackgroundColor(Color.GREEN);
+        if(levelDbHelper.getbool(id,one.datavase)==1)
+            holder.cardView_new.setCardBackgroundColor(Color.GREEN);
 
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                 levelDbHelper.getprogress(one.datavase,1);
-
-            //    Log.d(TAG, "newww: " + a);
-
-                if (dataSet.get(listPosition).getName().equals("Level 1")) {
-
-                //    int prog =1;
-
-
-
-                   /* Intent intent = new Intent(context, SecondActivity.class);
-                    context.startActivity(intent);*/
-
-                } else if (dataSet.get(listPosition).getName().equals("Level 2")) {
-                    Toast.makeText(context, "Level 1", Toast.LENGTH_SHORT).show();
-                }
-
-                // onCardClickListner.OnCardClicked(v, listPosition);
+                int id = levelDbHelper.readSubid(dataSet.get(listPosition).name.toString(),one.datavase);
+                int sid = levelDbHelper.readlvvlid(dataSet.get(listPosition).name.toString(),one.datavase);
+                String c1 = levelDbHelper.gc1(dataSet.get(listPosition).name.toString(),one.datavase);
+                String c2 = levelDbHelper.gc2(dataSet.get(listPosition).name.toString(),one.datavase);
+                String c3 = levelDbHelper.gc3(dataSet.get(listPosition).name.toString(),one.datavase);
+                String  lvlname = levelDbHelper.readlvname(sid,one.datavase);
+               Intent intent;
+                //One must pass all the intents required to infiltrate the content in the Activity.
+                intent = new Intent(context,ConceptScreen.class);
+                intent.putExtra("con1",c1);//Passes the concept 1 of that Sublevel.
+                intent.putExtra("con2",c2);//Passes the concept 2 of that Sublevel.
+                intent.putExtra("con3",c3);//Passes the concept 3 of that Sublevel.
+                intent.putExtra("subname",dataSet.get(listPosition).name.toString());//Passes Sublevel Name.
+                intent.putExtra("levelid",sid);//Passes Level id.
+                intent.putExtra("levelname",lvlname);//Passes the Levelname.
+                context.startActivity(intent);
 
             }
 
@@ -139,18 +147,21 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClickssss: ");
-
-                if (dataSet.get(listPosition).getName().equals("Android Name")) {
-
-                   /* Intent intent = new Intent(context, SecondActivity.class);
-                    context.startActivity(intent);*/
-
-                } else if (dataSet.get(listPosition).getName().equals("Level 2")) {
-                    Toast.makeText(context, "Level 2", Toast.LENGTH_SHORT).show();
-                }
-
-                // onCardClickListner.OnCardClicked(v, listPosition);
+                int sid = levelDbHelper.readlvvlid(dataSet.get(listPosition).name_second.toString(),one.datavase);
+                String c1 = levelDbHelper.gc1(dataSet.get(listPosition).name_second.toString(),one.datavase);
+                String c2 = levelDbHelper.gc2(dataSet.get(listPosition).name_second.toString(),one.datavase);
+                String c3 = levelDbHelper.gc3(dataSet.get(listPosition).name_second.toString(),one.datavase);
+                String  lvlname = levelDbHelper.readlvname(sid,one.datavase);
+                Intent intent;
+                //One must pass all the intents required to infiltrate the content in the Activity.
+                intent = new Intent(context,ConceptScreen.class);
+                intent.putExtra("con1",c1);//Passes the concept 1 of that Sublevel.
+                intent.putExtra("con2",c2);//Passes the concept 2 of that Sublevel.
+                intent.putExtra("con3",c3);//Passes the concept 3 of that Sublevel.
+                intent.putExtra("subname",dataSet.get(listPosition).name_second.toString());//Passes Sublevel Name.
+                intent.putExtra("levelid",sid);//Passes Level id.
+                intent.putExtra("levelname",lvlname);//Passes the Levelname.
+                context.startActivity(intent);
 
             }
 
