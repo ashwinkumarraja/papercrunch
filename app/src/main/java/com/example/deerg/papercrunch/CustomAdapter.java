@@ -112,9 +112,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         DataDbHelper dataDbHelper = new DataDbHelper(context);
         one = new MainActivity();
         int id = levelDbHelper.readSubid(dataSet.get(listPosition).name.toString(),one.datavase);
-        if(levelDbHelper.getbool(id,one.datavase)==1)
+        if(levelDbHelper.getbool(id,one.datavase)==1||levelDbHelper.getbool(id,one.datavase)==2)
             holder.cardView.setCardBackgroundColor(Color.GREEN);
-        if(levelDbHelper.getbool(id,one.datavase)==1)
+        if(levelDbHelper.getbool(id,one.datavase)==1||levelDbHelper.getbool(id,one.datavase)==2)
             holder.cardView_new.setCardBackgroundColor(Color.GREEN);
 
 
