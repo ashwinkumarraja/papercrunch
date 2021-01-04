@@ -1,4 +1,4 @@
-# papercrunch
+# Papercrunch
 
 The application is targeted for the age group 11 and above and teaches them the basics of C language.
 The user can use the app in the offline mode and learn all the concepts and attempt the
