@@ -22,3 +22,5 @@ as people will be well familiar with the UI and basics that it will be easy for 
 concepts.
 
 Hence the application is a great platform for beginners and enthusiastic learners.
+
+
